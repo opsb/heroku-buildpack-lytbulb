@@ -24,6 +24,7 @@ setUp()
   mkdir -p ${OUTPUT_DIR}
   mkdir -p ${BUILD_DIR}
   mkdir -p ${CACHE_DIR}
+  cp -rf "${DUMMY_APP}/" "${BUILD_DIR}"
 }
 
 tearDown()
