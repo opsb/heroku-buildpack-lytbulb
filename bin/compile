@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-echo "blah"
-
-
-
-
-
 set -e            # fail fast
 set -o pipefail   # don't ignore exit codes when piping output
 # set -x          # enable debugging
@@ -15,10 +9,7 @@ build_dir=$1
 cache_dir=$2
 env_dir=$3
 
-
-echo ">>>>>"
-echo $build_dir
-
+echo "  >> Copying api to build"
 cp -rf $build_dir/api/* $build_dir
 ls $build_dir
 
