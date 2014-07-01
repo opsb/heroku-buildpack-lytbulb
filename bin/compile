@@ -1,6 +1,6 @@
-echo "blah"
-
 #!/usr/bin/env bash
+
+echo "blah"
 
 
 
@@ -16,5 +16,10 @@ cache_dir=$2
 env_dir=$3
 
 
+echo ">>>>>"
+echo $build_dir
+
+cp -rf $build_dir/api/* $build_dir
+ls $build_dir
 
 exit 0
