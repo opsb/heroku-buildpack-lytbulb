@@ -63,6 +63,9 @@ detect()
 
 compile()
 {
+  echo "compiling init"
+  echo ${BUILD_DIR}
+  echo ${CACHE_DIR}
   capture ${BUILDPACK_HOME}/bin/compile ${BUILD_DIR} ${CACHE_DIR}
 }
 
