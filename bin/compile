@@ -13,7 +13,7 @@ ember_app_dir="$build_dir/app"
 
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
 
-./$bp_dir/bin/common.sh
+source "$bp_dir/bin/common.sh"
 
 installNode()
 {
