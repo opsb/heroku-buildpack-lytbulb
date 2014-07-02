@@ -76,19 +76,28 @@ restoreNodeModules()
 	fi
 }
 
-installNodeModules()
+buildEmberApp()
 {
 	cd "$ember_app_dir"
 	# Scope config var availability only to `npm install`
 	(
-	  if [ -d "$env_dir" ]; then
-	    status "Exporting config vars to environment"
-	    export_env_dir $env_dir
-	  fi
+		if [ -d "$env_dir" ]; then
+			status "Exporting config vars to environment"
+			export_env_dir $env_dir
+		fi
 
-	  status "Installing dependencies $(pwd)"
-	  # Make npm output to STDOUT instead of its default STDERR
-	  npm install --userconfig $ember_app_dir/.npmrc 2>&1 | indent
+		status "Installing dependencies $(pwd)"
+		# Make npm output to STDOUT instead of its default STDERR
+		npm install --userconfig $ember_app_dir/.npmrc 2>&1 | indent
+
+		status "Installing bower"
+		npm install bower 2>&1 | indent
+
+		status "Installing bower packages"
+		$ember_app_dir/node_modules/.bin/bower install 2>&1 | indent		
+
+		status "Building application"
+		$ember_app_dir/node_modules/.bin/ember build --environment production 2>&1 | indent
 	)
 }
 
@@ -100,7 +109,7 @@ addApi()
 
 installNode
 restoreNodeModules
-installNodeModules
+buildEmberApp
 addApi
 
 exit 0
