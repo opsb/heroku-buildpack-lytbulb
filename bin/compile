@@ -15,12 +15,15 @@ source "$bp_dir/bin/common.sh"
 
 installNode()
 {
-	status "Installing node"
 	# Output npm debug info on error
 	trap cat_npm_debug_log ERR
 
 	# Look in package.json's engines.node field for a semver range
 	semver_range=$(cat $build_dir/app/package.json | $bp_dir/vendor/jq -r .engines.node)
+
+	# Resolve node version using semver.io
+	node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
+	status "Installing node $node_version"
 
 	status "done"
 }
