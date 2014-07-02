@@ -30,8 +30,15 @@ shouldCopyAppToBuild()
 	assertTrue "Should have copied app's vendor dir to build", '[ -d "$BUILD_DIR/assets" ]'
 }
 
+shouldCleanup()
+{
+	assertFalse "Should have removed api dir", [ -d "$BUILD_DIR/api" ]
+	assertFalse "Should have removed app dir", [ -d "$BUILD_DIR/app" ]
+}
+
 testCompile() 
 {
+	# only run compile once for all tests as it's very slow (downloads dependencies from internet)
 	compile $BUILD_DIR
 
 	shouldInstallNode
@@ -39,4 +46,5 @@ testCompile()
 	shouldInstallBowerModules	
 	shouldCopyApiToBuild
 	shouldCopyAppToBuild
+	shouldCleanup
 }

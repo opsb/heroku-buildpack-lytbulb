@@ -8,6 +8,7 @@ set -o pipefail   # don't ignore exit codes when piping output
 build_dir=$1
 cache_dir=$2
 env_dir=$3
+rails_app_dir="$build_dir/api"
 ember_app_dir="$build_dir/app"
 
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
@@ -104,14 +105,19 @@ buildEmberApp()
 addApi()
 {
 	status "Copying api to build"
-	cp -rf $build_dir/api/* $build_dir	
+	cp -rf $rails_app_dir/* $build_dir	
 }
 
 addApp()
 {
 	status "Copying app to build"
-	tree $build_dir/app/dist/
-	cp -rf $build_dir/app/dist/* $build_dir
+	cp -rf $ember_app_dir/dist/* $build_dir
+}
+
+cleanup()
+{
+	rm -rf $rails_app_dir
+	rm -rf $ember_app_dir
 }
 
 installNode
@@ -119,5 +125,6 @@ restoreNodeModules
 buildEmberApp
 addApi
 addApp
+cleanup
 
 exit 0
