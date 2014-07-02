@@ -4,13 +4,14 @@ testCopiesContentsOfApiToBuildDir()
 {
 	compile $BUILD_DIR
 	assertCaptured "-----> Copying api to build"
-	assertTrue '[ -d "$BUILD_DIR/public" ]'
-	assertTrue '[ -f "$BUILD_DIR/Gemfile" ]'
+	assertTrue "Should have copied public folder to build dir" '[ -d "$BUILD_DIR/public" ]'
+	assertTrue "Should have copied Gemfile to build dir" '[ -f "$BUILD_DIR/Gemfile" ]'
 }
 
 testInstallsNode()
 {
 	compile $BUILD_DIR
-	assertCaptured "-----> Installing node 0.10.29"
+	assertCaptured "-----> Resolved node version: 0.10.29"
+	assertTrue "Should have installed node" '[ -d "$BUILD_DIR/node-v0.10.29-linux-x64" ]'
 }
 

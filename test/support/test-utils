@@ -34,6 +34,10 @@ tearDown()
   echo "\n>>>> stderr"
   cat $STD_ERR
 
+  # echo "/n>>>> Files:"
+  # tree ${OUTPUT_DIR}
+  ls "${OUTPUT_DIR}/build"
+
   rm -rf ${OUTPUT_DIR}
 }
 
