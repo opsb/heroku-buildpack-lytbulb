@@ -15,3 +15,11 @@ testInstallsNode()
 	assertTrue "Should have installed node" '[ -d "$BUILD_DIR/node-v0.10.29-linux-x64" ]'
 }
 
+testInstallNodeModules()
+{
+	compile $BUILD_DIR
+	ls $BUILD_DIR/app
+	assertTrue "Should have added node modules to ember app" '[ -d "$BUILD_DIR/app/node_modules" ]'
+}
+
+

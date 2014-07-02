@@ -36,9 +36,13 @@ tearDown()
   cat $STD_ERR
   echo   "----------------- stderr -----------------"
 
+  # echo ${OUTPUT_DIR}
+  # echo "sleeping"
+  # sleep 10m
+  # echo "finished sleeping"
   # echo "/n>>>> Files:"
-  # tree ${OUTPUT_DIR}
-  # ls "${OUTPUT_DIR}/build"
+  # tree "${OUTPUT_DIR}/build"
+  # ls "${OUTPUT_DIR}/build/app" | indent
 
   rm -rf ${OUTPUT_DIR}
 }

@@ -8,6 +8,7 @@ set -o pipefail   # don't ignore exit codes when piping output
 build_dir=$1
 cache_dir=$2
 env_dir=$3
+ember_app_dir="$build_dir/app"
 
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
 
@@ -51,17 +52,18 @@ installNode()
 	status "done"
 }
 
-setupNodeModules()
+restoreNodeModules()
 {
+	cd "$ember_app_dir"
 	# If node_modules directory is checked into source control then
 	# rebuild any native deps. Otherwise, restore from the build cache.
-	if test -d $build_dir/node_modules; then
+	if test -d $ember_app_dir/node_modules; then
 	  status "Found existing node_modules directory; skipping cache"
 	  status "Rebuilding any native dependencies"
 	  npm rebuild 2>&1 | indent
 	elif test -d $cache_dir/node/node_modules; then
 	  status "Restoring node_modules directory from cache"
-	  cp -r $cache_dir/node/node_modules $build_dir/
+	  cp -r $cache_dir/node/node_modules $ember_app_dir/
 
 	  status "Pruning cached dependencies not specified in package.json"
 	  npm prune 2>&1 | indent
@@ -74,6 +76,22 @@ setupNodeModules()
 	fi
 }
 
+installNodeModules()
+{
+	cd "$ember_app_dir"
+	# Scope config var availability only to `npm install`
+	(
+	  if [ -d "$env_dir" ]; then
+	    status "Exporting config vars to environment"
+	    export_env_dir $env_dir
+	  fi
+
+	  status "Installing dependencies $(pwd)"
+	  # Make npm output to STDOUT instead of its default STDERR
+	  npm install --userconfig $ember_app_dir/.npmrc 2>&1 | indent
+	)
+}
+
 addApi()
 {
 	status "Copying api to build"
@@ -81,7 +99,8 @@ addApi()
 }
 
 installNode
-setupNodeModules
+restoreNodeModules
+installNodeModules
 addApi
 
 exit 0
