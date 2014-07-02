@@ -9,8 +9,11 @@ build_dir=$1
 cache_dir=$2
 env_dir=$3
 
-echo "  >> Copying api to build"
-cp -rf $build_dir/api/* $build_dir
-ls $build_dir
+addApi()
+{
+	echo "  >> Copying api to build"
+	cp -rf $build_dir/api/* $build_dir	
+}
 
+addApi
 exit 0
