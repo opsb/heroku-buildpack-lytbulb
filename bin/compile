@@ -107,9 +107,17 @@ addApi()
 	cp -rf $build_dir/api/* $build_dir	
 }
 
+addApp()
+{
+	status "Copying app to build"
+	tree $build_dir/app/dist/
+	cp -rf $build_dir/app/dist/* $build_dir
+}
+
 installNode
 restoreNodeModules
 buildEmberApp
 addApi
+addApp
 
 exit 0

@@ -1,12 +1,5 @@
 source "$BUILDPACK_TEST_RUNNER_HOME/test/support/test-utils"
 
-shouldCopyApiToBuild()
-{
-	assertCaptured "-----> Copying api to build"
-	assertTrue "Should have copied public folder to build dir" '[ -d "$BUILD_DIR/public" ]'
-	assertTrue "Should have copied Gemfile to build dir" '[ -f "$BUILD_DIR/Gemfile" ]'
-}
-
 shouldInstallNode()
 {
 	assertCaptured "-----> Resolved node version: 0.10.29"
@@ -23,6 +16,20 @@ shouldInstallBowerModules()
 	assertTrue "Should have installed bower modules to ember app" '[ -d "$BUILD_DIR/app/vendor" ]'
 }
 
+shouldCopyApiToBuild()
+{
+	assertCaptured "-----> Copying api to build"
+	assertTrue "Should have copied public folder to build dir" '[ -d "$BUILD_DIR/public" ]'
+	assertTrue "Should have copied Gemfile to build dir" '[ -f "$BUILD_DIR/Gemfile" ]'
+}
+
+shouldCopyAppToBuild()
+{
+	assertCaptured "-----> Copying app to build"
+	assertTrue "Should have copied app's app dir to build", '[ -f "$BUILD_DIR/index.html" ]'
+	assertTrue "Should have copied app's vendor dir to build", '[ -d "$BUILD_DIR/assets" ]'
+}
+
 testCompile() 
 {
 	compile $BUILD_DIR
@@ -30,5 +37,6 @@ testCompile()
 	shouldInstallNode
 	shouldInstallNodeModules
 	shouldInstallBowerModules	
-	shouldCopyApiToBuild	
+	shouldCopyApiToBuild
+	shouldCopyAppToBuild
 }
