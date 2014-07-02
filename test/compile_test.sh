@@ -32,8 +32,8 @@ shouldCopyAppToBuild()
 
 shouldCleanup()
 {
-	assertFalse "Should have removed api dir", [ -d "$BUILD_DIR/api" ]
-	assertFalse "Should have removed app dir", [ -d "$BUILD_DIR/app" ]
+	assertFalse "Should have removed api dir", '[ -d "$BUILD_DIR/api" ]'
+	assertFalse "Should have removed app dir", '[ -d "$BUILD_DIR/app" ]'
 }
 
 testCompile() 

@@ -50,6 +50,12 @@ installNode()
 	node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
 	curl $node_url -s -o - | tar xzf - -C $build_dir
 
+	node_bin_dir="$build_dir/node-v$node_version-linux-x64/bin"
+	chmod +x $node_bin_dir/*
+	PATH="$node_bin_dir:$PATH"
+
+	echo $PATH
+
 	status "done"
 }
 
