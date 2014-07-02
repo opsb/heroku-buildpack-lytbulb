@@ -18,8 +18,13 @@ testInstallsNode()
 testInstallNodeModules()
 {
 	compile $BUILD_DIR
-	ls $BUILD_DIR/app
 	assertTrue "Should have added node modules to ember app" '[ -d "$BUILD_DIR/app/node_modules" ]'
+}
+
+testInstallsBowerModules()
+{
+	compile $BUILD_DIR
+	assertTrue "Should have installed bower modules to ember app" '[ -d "$BUILD_DIR/app/vendor" ]'
 }
 
 
