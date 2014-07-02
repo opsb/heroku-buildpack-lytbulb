@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 export SHUNIT_HOME=$(pwd)/vendor/shunit2.1
+export TESTING=true
 ./test/run .

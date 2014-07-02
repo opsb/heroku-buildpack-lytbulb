@@ -8,8 +8,8 @@ set -o pipefail   # don't ignore exit codes when piping output
 build_dir=$1
 cache_dir=$2
 env_dir=$3
-rails_app_dir="$build_dir/api"
-ember_app_dir="$build_dir/app"
+rails_app_dir="$build_dir/server"
+ember_app_dir="$build_dir/client"
 
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
 
@@ -22,7 +22,7 @@ installNode()
 	trap cat_npm_debug_log ERR
 
 	# Look in package.json's engines.node field for a semver range
-	local semver_range=$(cat $build_dir/app/package.json | $bp_dir/vendor/jq -r .engines.node)
+	local semver_range=$(cat $ember_app_dir/package.json | $bp_dir/vendor/jq -r .engines.node)
 
 	# Resolve node version using semver.io
 	local node_version=$(curl --silent --get --data-urlencode "range=${semver_range}" https://semver.io/node/resolve)
@@ -50,9 +50,9 @@ installNode()
 	node_url="http://s3pository.heroku.com/node/v$node_version/node-v$node_version-linux-x64.tar.gz"
 	curl $node_url -s -o - | tar xzf - -C $build_dir
 
-	node_bin_dir="$build_dir/node-v$node_version-linux-x64/bin"
-	chmod +x $node_bin_dir/*
-	PATH="$node_bin_dir:$PATH"
+	node_dir="$build_dir/node-v$node_version-linux-x64"
+	chmod +x $node_dir/bin/*
+	PATH="$node_dir/bin:$PATH"
 
 	echo $PATH
 
@@ -110,20 +110,23 @@ buildEmberApp()
 
 addApi()
 {
-	status "Copying api to build"
+	status "Copying server to build"
 	cp -rf $rails_app_dir/* $build_dir	
 }
 
 addApp()
 {
-	status "Copying app to build"
-	cp -rf $ember_app_dir/dist/* $build_dir
+	status "Copying client to build"
+	cp -rf $ember_app_dir/dist/* $build_dir/public
 }
 
 cleanup()
 {
-	rm -rf $rails_app_dir
-	rm -rf $ember_app_dir
+	if [ -z "$TESTING" ]; then
+		rm -rf $rails_app_dir
+		rm -rf $ember_app_dir
+		rm -rf $node_dir
+	fi
 }
 
 installNode
@@ -132,5 +135,7 @@ buildEmberApp
 addApi
 addApp
 cleanup
+echo "==================== build dir ===================="
+find $build_dir -maxdepth 2
 
 exit 0

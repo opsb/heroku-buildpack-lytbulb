@@ -1,4 +1,4 @@
-source "$BUILDPACK_TEST_RUNNER_HOME/test/support/test-utils"
+. "$BUILDPACK_TEST_RUNNER_HOME/test/support/test-utils"
 
 shouldInstallNode()
 {
@@ -8,32 +8,26 @@ shouldInstallNode()
 
 shouldInstallNodeModules()
 {
-	assertTrue "Should have added node modules to ember app" '[ -d "$BUILD_DIR/app/node_modules" ]'
+	assertTrue "Should have added node modules to ember app" '[ -d "$BUILD_DIR/client/node_modules" ]'
 }
 
 shouldInstallBowerModules()
 {
-	assertTrue "Should have installed bower modules to ember app" '[ -d "$BUILD_DIR/app/vendor" ]'
+	assertTrue "Should have installed bower modules to ember app" '[ -d "$BUILD_DIR/client/vendor" ]'
 }
 
 shouldCopyApiToBuild()
 {
-	assertCaptured "-----> Copying api to build"
+	assertCaptured "-----> Copying server to build"
 	assertTrue "Should have copied public folder to build dir" '[ -d "$BUILD_DIR/public" ]'
 	assertTrue "Should have copied Gemfile to build dir" '[ -f "$BUILD_DIR/Gemfile" ]'
 }
 
 shouldCopyAppToBuild()
 {
-	assertCaptured "-----> Copying app to build"
-	assertTrue "Should have copied app's app dir to build", '[ -f "$BUILD_DIR/index.html" ]'
-	assertTrue "Should have copied app's vendor dir to build", '[ -d "$BUILD_DIR/assets" ]'
-}
-
-shouldCleanup()
-{
-	assertFalse "Should have removed api dir", '[ -d "$BUILD_DIR/api" ]'
-	assertFalse "Should have removed app dir", '[ -d "$BUILD_DIR/app" ]'
+	assertCaptured "-----> Copying client to build"
+	assertTrue "Should have copied app's app dir to build/public", '[ -f "$BUILD_DIR/public/index.html" ]'
+	assertTrue "Should have copied app's assets dir to build/public", '[ -d "$BUILD_DIR/public/assets" ]'
 }
 
 testCompile() 

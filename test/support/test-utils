@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # taken from
 # https://github.com/ryanbrainard/heroku-buildpack-testrunner/blob/master/lib/test_utils.sh
@@ -21,9 +21,10 @@ setUp()
   BUILD_DIR="${OUTPUT_DIR}/build"
   CACHE_DIR="${OUTPUT_DIR}/cache"
   mkdir -p ${OUTPUT_DIR}
-  mkdir -p ${BUILD_DIR}
+  mv "${DUMMY_APP}" "${BUILD_DIR}"
   mkdir -p ${CACHE_DIR}
-  cp -rf "${DUMMY_APP}/" "${BUILD_DIR}"
+  echo ">> build dir contents"
+  ls $BUILD_DIR
 }
 
 tearDown()
