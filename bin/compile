@@ -15,6 +15,13 @@ source "$bp_dir/bin/common.sh"
 
 installNode()
 {
+	status "Installing node"
+	# Output npm debug info on error
+	trap cat_npm_debug_log ERR
+
+	# Look in package.json's engines.node field for a semver range
+	semver_range=$(cat $build_dir/app/package.json | $bp_dir/vendor/jq -r .engines.node)
+
 	status "done"
 }
 

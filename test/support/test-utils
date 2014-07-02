@@ -28,14 +28,12 @@ setUp()
 
 tearDown()
 {
-  echo ">>>> stdout"
+  echo "\n>>>> stdout"
   cat $STD_OUT
-  echo
 
-  echo ">>>> stderr"
+  echo "\n>>>> stderr"
   cat $STD_ERR
-  echo
-  
+
   rm -rf ${OUTPUT_DIR}
 }
 
