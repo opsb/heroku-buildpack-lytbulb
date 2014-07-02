@@ -28,11 +28,13 @@ setUp()
 
 tearDown()
 {
-  echo "\n================= stdout ================="
+  echo "\n+++++++++++++++++ stdout +++++++++++++++++"
   cat $STD_OUT
+  echo   "----------------- stdout -----------------"
 
-  echo "\n================= stderr ================="
+  echo "\n+++++++++++++++++ stderr +++++++++++++++++"
   cat $STD_ERR
+  echo   "----------------- stderr -----------------"
 
   # echo "/n>>>> Files:"
   # tree ${OUTPUT_DIR}
