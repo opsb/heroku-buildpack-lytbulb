@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
+export SHUNIT_HOME=vendor/shunit2/shunit2
 ./test/run .
