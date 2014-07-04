@@ -129,12 +129,32 @@ cleanup()
 	fi
 }
 
+cacheNodeModules()
+{
+	# If app has a node_modules directory, cache it.
+	if test -d $ember_app_dir/node_modules; then
+	  status "Caching node_modules directory for future builds"
+	  cp -r $ember_app_dir/node_modules $cache_dir/node
+	fi
+}
+
+cacheNodeVersion()
+{
+	mkdir -p $build_dir/.heroku
+	# Save resolved node version in the slug for later reference
+	echo $node_version > $build_dir/.heroku/node-version
+	cp -r $build_dir/.heroku $cache_dir/node
+}
+
 installNode
 restoreNodeModules
 buildEmberApp
 addApi
 addApp
+cacheNodeModules
+cacheNodeVersion
 cleanup
+
 echo "==================== build dir ===================="
 find $build_dir -maxdepth 2
 
