@@ -40,7 +40,7 @@ installNode()
 	local semver_range=$(cat $ember_app_dir/package.json | $bp_dir/vendor/jq -r .engines.node)
 
 	# Resolve node version using semver.io
-	local node_version="0.11.3"
+	local node_version="0.10.3"
 
 	# Recommend using semver ranges in a safe manner
 	if [ "$semver_range" == "null" ]; then
